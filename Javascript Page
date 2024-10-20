@@ -1,0 +1,66 @@
+const display = document.getElementById('display');
+const buttons = document.querySelectorAll('button');
+
+let currentNumber = '';
+let previousNumber = '';
+let operation = '';
+
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        const buttonValue = e.target.textContent;
+
+        switch (buttonValue) {
+            case 'C':
+                currentNumber = '';
+                previousNumber = '';
+                operation = '';
+                display.value = '';
+                break;
+            case '←':
+                currentNumber = currentNumber.slice(0, -1);
+                display.value = currentNumber;
+                break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operation = buttonValue;
+                break;
+            case '=':
+                calculateResult();
+                break;
+            default:
+                currentNumber += buttonValue;
+                display.value = currentNumber;
+        }
+    });
+});
+
+function calculateResult() {
+    const num1 = parseFloat(previousNumber);
+    const num2 = parseFloat(currentNumber);
+
+    switch (operation) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2;
+            break;
+        case '/':
+            result = num1 / num2;
+            break;
+        default:
+            result = currentNumber;
+    }
+
+    display.value = result.toString();
+    currentNumber = result.toString();
+    previousNumber = '';
+    operation = '';
+}
